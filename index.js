@@ -1,13 +1,46 @@
-const Discord = require('discord.js');
+const Discord = require('discord.js')
 
-const client = new Discord.Client();
+const client = new Discord.Client()
 
 const ytdl = require('ytdl-core')
 
 const prefix = ";"
 
-require('dotenv').config()
+const fs = require('fs')
 
+// Command Hadlers
+client.commands = new Discord.Collection()
+
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
+for (file of commandFiles) {
+    const command = require(`./commands/${file}`)
+
+    client.commands.set(command.name, command)
+}
+
+client.modCommands = new Discord.Collection()
+
+const modCommandFiles = fs.readdirSync('./commands/moderation-commands/').filter(file => file.endsWith('.js'))
+for (file of modCommandFiles) {
+    const command = require(`./commands/moderation-commands/${file}`)
+
+    client.modCommands.set(command.name, command)
+}
+
+client.musicCommands = new Discord.Collection()
+
+const musicCommandFiles = fs.readdirSync('./commands/music/').filter(file => file.endsWith('.js'))
+for (file of musicCommandFiles) {
+    const command = require(`./commands/music/${file}`)
+
+    client.musicCommands.set(command.name, command)
+}
+
+
+// Ready Event
+client.on("ready", () => console.log(`I'm logged in as ${client.user.username}`))
+
+// Anti-Advert
 const isInvite = async (guild, code) => {
 
     return await new Promise((resolve) => {
@@ -22,9 +55,6 @@ const isInvite = async (guild, code) => {
         })
     })
 }
-
-client.on("ready", () => console.log(`I'm logged in as ${client.user.username}`))
-
 // client.on('message', async (message) => {
 //     const { guild, member, content } = message
 
@@ -42,19 +72,26 @@ client.on("ready", () => console.log(`I'm logged in as ${client.user.username}`)
 //     }
 // })
 
-// ! Music
-client.on('message', message => {
-    if (!message.guild) return
-    if (message.author.bot) return
 
-    if (message.content.startsWith(`${prefix}join`)) {
-        if (!message.member.voice.channel) return message.reply(`You need to be in a voice channel to me able to join.`)
-        message.member.voice.channel.join()
-    } else if (message.content.startsWith(`${prefix}leave`)) {
-        if (!message.member.voice.channel) return message.reply(`You need to be in the voice channel to use this.`)
-        message.member.voice.channel.leave()
+
+client.on('message', message => {
+    if (!message.content.startsWith(prefix) || message.author.bot) return
+
+    const args = message.content.slice(prefix.length).split(/ +/)
+    const command = args.shift().toLowerCase()
+
+    if (command === 'ping') {
+        client.commands.get('ping').execute(message, args)
+    }
+
+    if (command === 'play') {
+        client.musicCommands.get('play').execute(message, args)
+    } else if (command === 'leave') {
+        client.musicCommands.get('leave').execute(message, args)
     }
 })
 
+// Bot token :)
+require('dotenv').config()
 
 client.login(process.env.token)
