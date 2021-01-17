@@ -1,44 +1,31 @@
-const Discord = require('discord.js')
-
-const client = new Discord.Client()
-
-const ytdl = require('ytdl-core')
-
-const prefix = ";"
-
+const path = require('path')
 const fs = require('fs')
-
-// Command Hadlers
-client.commands = new Discord.Collection()
-
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
-for (file of commandFiles) {
-    const command = require(`./commands/${file}`)
-
-    client.commands.set(command.name, command)
-}
-
-client.modCommands = new Discord.Collection()
-
-const modCommandFiles = fs.readdirSync('./commands/moderation-commands/').filter(file => file.endsWith('.js'))
-for (file of modCommandFiles) {
-    const command = require(`./commands/moderation-commands/${file}`)
-
-    client.modCommands.set(command.name, command)
-}
-
-client.musicCommands = new Discord.Collection()
-
-const musicCommandFiles = fs.readdirSync('./commands/music/').filter(file => file.endsWith('.js'))
-for (file of musicCommandFiles) {
-    const command = require(`./commands/music/${file}`)
-
-    client.musicCommands.set(command.name, command)
-}
+const Discord = require('discord.js')
+const client = new Discord.Client()
 
 
 // Ready Event
-client.on("ready", () => console.log(`I'm logged in as ${client.user.username}`))
+client.on('ready', async () => {
+    console.log(`${client.user.tag} client is ready!`)
+
+    const baseFile = 'command-base.js'
+    const commandBase = require(`./commands/${baseFile}`)
+
+    const readCommands = (dir) => {
+        const files = fs.readdirSync(path.join(__dirname, dir))
+        for (const file of files) {
+            const stat = fs.lstatSync(path.join(__dirname, dir, file))
+            if (stat.isDirectory()) {
+                readCommands(path.join(dir, file))
+            } else if (file !== baseFile) {
+                const option = require(path.join(__dirname, dir, file))
+                commandBase(client, option)
+            }
+        }
+    }
+
+    readCommands('commands')
+})
 
 // Anti-Advert
 const isInvite = async (guild, code) => {
@@ -71,25 +58,6 @@ const isInvite = async (guild, code) => {
 //         }
 //     }
 // })
-
-
-
-client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return
-
-    const args = message.content.slice(prefix.length).split(/ +/)
-    const command = args.shift().toLowerCase()
-
-    if (command === 'ping') {
-        client.commands.get('ping').execute(message, args)
-    }
-
-    if (command === 'play') {
-        client.musicCommands.get('play').execute(message, args)
-    } else if (command === 'leave') {
-        client.musicCommands.get('leave').execute(message, args)
-    }
-})
 
 // Bot token :)
 require('dotenv').config()
