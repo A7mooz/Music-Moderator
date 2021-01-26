@@ -108,6 +108,15 @@ client.on("message", async (message) => {
                 message.channel.send(embed)
             }
 
+            if (command == "settings") {
+                let queue = distube.getQueue(message);
+                const embed = new Discord.MessageEmbed()
+                    .setTitle("Current music settings")
+                    .setColor('PURPLE')
+                    .setDescription(`${status(queue)}`)
+                message.channel.send(embed)
+            }
+
             if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
                 let filter = distube.setFilter(message, command);
                 message.channel.send("Current queue filter: " + (filter || "Off"));
