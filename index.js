@@ -5,7 +5,7 @@ const DisTube = require('distube')
 const { prefix } = require('./config.json')
 const client = new Discord.Client()
 
-const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true, leaveOnStop: false, leaveOnEmpty: false });
+const distube = new DisTube(client, { searchSongs: true, leaveOnStop: false, leaveOnEmpty: false });
 
 // Ready Event
 client.on('ready', async () => {
@@ -63,6 +63,11 @@ const isInvite = async (guild, code) => {
 // })
 
 // Music 
+
+
+// Queue status template
+const status = (queue) => `Volume: ${queue.volume}% | Filter: ${queue.filter || "Off"} | Loop: ${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"} | Autoplay: ${queue.autoplay ? "On" : "Off"}`;
+
 client.on("message", async (message) => {
     if (!message.guild) return;
     if (message.author.bot) return;
@@ -70,40 +75,48 @@ client.on("message", async (message) => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
-    if (!message.member.voice.channel) return message.reply('You must be in a voice channel to use this command.');
+    const voiceChannel = message.member.voice.channel
 
-    if (command == "play")
-        distube.play(message, args.join(" "));
+    if (voiceChannel) {
+        if (command == "play") {
+            distube.play(message, args.join(" "));
+        }
 
-    if (["repeat", "loop"].includes(command))
-        distube.setRepeatMode(message, parseInt(args[0]));
+        if (distube.isPlaying(message.guild.id)) {
+            if (["repeat", "loop"].includes(command)) {
+                distube.setRepeatMode(message, parseInt(args[0]));
+            }
 
-    if (command == "stop") {
-        distube.stop(message);
-        message.channel.send("Stopped the music!");
-    }
+            if (command == "stop") {
+                distube.stop(message);
+                message.channel.send("Stopped the music!");
+            }
 
-    if (command == "skip")
-        distube.skip(message);
+            if (command == "skip") {
+                distube.skip(message);
+            }
 
-    if (command == "queue") {
-        let queue = distube.getQueue(message);
-        const embed = new Discord.MessageEmbed()
-            .setTitle('Current queue:')
-            .setDescription(queue.songs.map((song, id) =>
-                `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
-            ).slice(0, 10).join("\n"))
-            .setColor('PURPLE')
-    }
+            if (command == "queue") {
 
-    if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
-        let filter = distube.setFilter(message, command);
-        message.channel.send("Current queue filter: " + (filter || "Off"));
+                let queue = distube.getQueue(message);
+                const embed = new Discord.MessageEmbed()
+                    .setTitle('Current queue:')
+                    .setDescription(queue.songs.map((song, id) =>
+                        `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
+                    ).slice(0, 10).join("\n"))
+                    .setColor('PURPLE')
+                message.channel.send(embed)
+            }
+
+            if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
+                let filter = distube.setFilter(message, command);
+                message.channel.send("Current queue filter: " + (filter || "Off"));
+            }
+        }
+    } else {
+        message.reply("You must be in a voice channel to play music")
     }
 });
-
-// Queue status template
-const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 
 // DisTube event listeners, more in the documentation page
 distube
@@ -125,12 +138,14 @@ distube
             .setColor('PURPLE')
             .setDescription(`Play \`${playlist.name}\` playlist (${playlist.songs.length} songs).\nRequested by: ${song.user}\nNow playing \`${song.name}\` - \`${song.formattedDuration}\`\n`)
             .setFooter(`${status(queue)}`)
+        message.channel.send(embed)
     })
     .on("addList", (message, queue, playlist) => {
         const embed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setDescription(`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue\n`)
             .setFooter(`${status(queue)}`)
+        message.channel.send(embed)
     })
     // DisTubeOptions.searchSongs = true
     .on("searchResult", (message, result) => {
