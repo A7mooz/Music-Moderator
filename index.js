@@ -93,6 +93,7 @@ client.on("message", async (message) => {
             .setDescription(queue.songs.map((song, id) =>
                 `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
             ).slice(0, 10).join("\n"))
+            .setColor('PURPLE')
     }
 
     if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
