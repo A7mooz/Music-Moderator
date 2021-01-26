@@ -7,7 +7,7 @@ const client = new Discord.Client()
 
 const distube = new DisTube(client, { searchSongs: true, leaveOnStop: false, leaveOnEmpty: false });
 
-// Ready Event
+// ! Ready Event
 client.on('ready', async () => {
     console.log(`${client.user.tag} client is ready!`)
 
@@ -30,7 +30,7 @@ client.on('ready', async () => {
     readCommands('commands')
 })
 
-// Anti-Advert
+// ! Anti-Advert
 const isInvite = async (guild, code) => {
 
     return await new Promise((resolve) => {
@@ -62,11 +62,7 @@ const isInvite = async (guild, code) => {
 //     }
 // })
 
-// Music 
-
-
-// Queue status template
-const status = (queue) => `Volume: ${queue.volume}% | Filter: ${queue.filter || "Off"} | Loop: ${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"} | Autoplay: ${queue.autoplay ? "On" : "Off"}`;
+// ! Music 
 
 client.on("message", async (message) => {
     if (!message.guild) return;
@@ -78,6 +74,9 @@ client.on("message", async (message) => {
     const voiceChannel = message.member.voice.channel
 
     if (voiceChannel) {
+
+        const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
+
         if (command == "play") {
             distube.play(message, args.join(" "));
         }
@@ -122,10 +121,13 @@ client.on("message", async (message) => {
                 message.channel.send("Current queue filter: " + (filter || "Off"));
             }
         }
-    } else {
+    } else
         message.reply("You must be in a voice channel to play music")
-    }
+
 });
+
+// Queue status template
+const status = (queue) => `Volume: ${queue.volume}% | Filter: ${queue.filter || "Off"} | Loop: ${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"} | Autoplay: ${queue.autoplay ? "On" : "Off"}`;
 
 // DisTube event listeners, more in the documentation page
 distube
@@ -173,7 +175,7 @@ distube
         message.channel.send("An error encountered: " + e);
     });
 
-// Bot token :)
+// ! Bot token :)
 require('dotenv').config()
 
 client.login(process.env.token)
