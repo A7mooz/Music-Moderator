@@ -5,7 +5,7 @@ const DisTube = require('distube')
 const { prefix } = require('./config.json')
 const client = new Discord.Client()
 
-distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true, leaveOnStop: false, leaveOnEmpty: false, leaveOnFinish: false });
+distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true, leaveOnStop: false, leaveOnEmpty: false });
 
 // Ready Event
 client.on('ready', async () => {
