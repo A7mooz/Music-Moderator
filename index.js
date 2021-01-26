@@ -5,7 +5,7 @@ const DisTube = require('distube')
 const { prefix } = require('./config.json')
 const client = new Discord.Client()
 
-distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true });
+distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true, leaveOnStop: false, leaveOnEmpty: false, leaveOnFinish: false });
 
 // Ready Event
 client.on('ready', async () => {
@@ -88,9 +88,11 @@ client.on("message", async (message) => {
 
     if (command == "queue") {
         let queue = distube.getQueue(message);
-        message.channel.send('Current queue:\n' + queue.songs.map((song, id) =>
-            `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
-        ).slice(0, 10).join("\n"));
+        const embed = new Discord.MessageEmbed()
+            .setTitle('Current queue:')
+            .setDescription(queue.songs.map((song, id) =>
+                `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
+            ).slice(0, 10).join("\n"))
     }
 
     if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
