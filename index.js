@@ -122,7 +122,7 @@ client.on("message", async (message) => {
             }
         }
     } else
-        message.reply("You must be in a voice channel to play music")
+        message.reply("You must be in a voice channel to use this")
 
 });
 
