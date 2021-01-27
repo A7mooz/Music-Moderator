@@ -62,8 +62,7 @@ const isInvite = async (guild, code) => {
 //     }
 // })
 
-// ! Music 
-
+// ! Music
 client.on("message", async (message) => {
     if (!message.guild) return;
     if (message.author.bot) return;
@@ -73,57 +72,59 @@ client.on("message", async (message) => {
 
     const voiceChannel = message.member.voice.channel
 
-    if (voiceChannel) {
+    const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 
-        const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
+    if (command == "play") {
+        if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+        distube.play(message, args.join(" "));
+    }
 
-        if (command == "play") {
-            distube.play(message, args.join(" "));
+    if (distube.isPlaying(message.guild.id)) {
+        if (["repeat", "loop"].includes(command)) {
+            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            distube.setRepeatMode(message, parseInt(args[0]));
         }
 
-        if (distube.isPlaying(message.guild.id)) {
-            if (["repeat", "loop"].includes(command)) {
-                distube.setRepeatMode(message, parseInt(args[0]));
-            }
-
-            if (command == "stop") {
-                distube.stop(message);
-                message.channel.send("Stopped the music!");
-            }
-
-            if (command == "skip") {
-                distube.skip(message);
-            }
-
-            if (command == "queue") {
-
-                let queue = distube.getQueue(message);
-                const embed = new Discord.MessageEmbed()
-                    .setTitle('Current queue:')
-                    .setDescription(queue.songs.map((song, id) =>
-                        `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
-                    ).slice(0, 10).join("\n"))
-                    .setColor('PURPLE')
-                message.channel.send(embed)
-            }
-
-            if (command == "settings") {
-                let queue = distube.getQueue(message);
-                const embed = new Discord.MessageEmbed()
-                    .setTitle("Current music settings")
-                    .setColor('PURPLE')
-                    .setDescription(`${status(queue)}`)
-                message.channel.send(embed)
-            }
-
-            if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
-                let filter = distube.setFilter(message, command);
-                message.channel.send("Current queue filter: " + (filter || "Off"));
-            }
+        if (command == "stop") {
+            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            distube.stop(message);
+            message.channel.send("Stopped the music!");
         }
-    } else
-        message.reply("You must be in a voice channel to use this")
 
+        if (command == "skip") {
+            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            distube.skip(message);
+        }
+
+        if (command == "queue") {
+            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+
+            let queue = distube.getQueue(message);
+            const embed = new Discord.MessageEmbed()
+                .setTitle('Current queue:')
+                .setDescription(queue.songs.map((song, id) =>
+                    `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
+                ).slice(0, 10).join("\n"))
+                .setColor('PURPLE')
+            message.channel.send(embed)
+        }
+
+        if (command == "settings") {
+            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            let queue = distube.getQueue(message);
+            const embed = new Discord.MessageEmbed()
+                .setTitle("Current music settings")
+                .setColor('PURPLE')
+                .setDescription(`${status(queue)}`)
+            message.channel.send(embed)
+        }
+
+        if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
+            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            let filter = distube.setFilter(message, command);
+            message.channel.send("Current queue filter: " + (filter || "Off"));
+        }
+    }
 });
 
 // Queue status template
