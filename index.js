@@ -82,7 +82,9 @@ client.on("message", async (message) => {
     if (distube.isPlaying(message.guild.id)) {
         if (["repeat", "loop"].includes(command)) {
             if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            let queue = distube.getQueue(message);
             distube.setRepeatMode(message, parseInt(args[0]));
+            message.channel.send(`Loop mode set to \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\``)
         }
 
         if (command == "stop") {
