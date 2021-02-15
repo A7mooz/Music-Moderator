@@ -62,6 +62,118 @@ const isInvite = async (guild, code) => {
 //     }
 // })
 
+// ! Custom commmands
+client.on("message", async message => {
+    if (message.author.bot || !message.content.startsWith(prefix)) return
+
+    const args = message.content.slice(prefix.length).split(/ +/)
+    const command = args.shift().toLowerCase()
+    const channel = message.guild.channels.cache.find(cl => cl.id === '793417550993031198')
+
+    if (command == 'promote') {
+        if (message.author.id !== message.member.guild.ownerID) return message.delete();
+        if (!args[0]) return message.reply('Please mention user to promote!')
+
+        const member = message.guild.member(message.mentions.users.first())
+
+        message.channel.send(">>> **[1] Internship moderation\n[2] Moderator\n[0] Cancel**").then(m => {
+            message.channel.awaitMessages(msg => msg.author.id === message.author.id, {
+                max: 1,
+                time: 1000 * 60 * 2,
+                errors: ["time"]
+            }).then(async (c) => {
+                var roles = null
+                if (c.first().content === "1") {
+                    roles = ['793825819427471361', '793393550942404619']
+                    c.first().delete().catch(e => null)
+                    m.delete().catch(e => null)
+
+                    if (roles == null) return message.reply('**Invald number**')
+                    if (roles.length == 0) return message.reply("**Couldn't find this number**")
+                    else {
+                        message.channel.send(`Promoting member...`).then(msg => {
+                            member.roles.add(roles)
+                            msg.edit(`**Member has been successfuly promoted**`)
+                            msg.delete({ timeout: 3000 })
+                        })
+
+                        const embed = new Discord.MessageEmbed()
+                            .setColor(0x3BAEE5)
+                            .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
+                            .setDescription(`**Promoted** ${member.user} *(ID ${member.user.id})*\n **to** <@&793393550942404619>`)
+                            .setThumbnail(member.user.avatarURL())
+                        channel.send(embed)
+                    }
+                }
+
+                if (c.first().content === "2") {
+                    roles = ['793825819427471361', '793393474690482196']
+                    c.first().delete().catch(e => null)
+                    m.delete().catch(e => null)
+                    if (roles == null) return message.reply('**Invald number**')
+                    if (roles.length == 0) return message.reply("**Couldn't find this number**")
+                    else {
+                        message.channel.send(`Promoting member...`).then(msg => {
+                            member.roles.add(roles)
+                            msg.edit(`**Member has been successfuly promoted**`)
+                            msg.delete({ timeout: 3000 })
+                        })
+
+                        const embed = new Discord.MessageEmbed()
+                            .setColor(0x3BAEE5)
+                            .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
+                            .setDescription(`**Promoted** ${member.user} *(ID ${member.user.id})*\n **to** <@&793393474690482196>`)
+                            .setThumbnail(member.user.avatarURL())
+                        channel.send(embed)
+                    }
+
+                }
+
+                if (c.first().content === "0") {
+                    c.first().delete().catch(e => null)
+                    m.delete().catch(e => null)
+                    message.channel.send(`**Operation has been canceled successfully**`).then(msg => msg.delete({ timeout: 3000 }))
+                }
+            })
+            message.delete()
+        })
+
+    }
+
+    if (command == 'demote') {
+        if (message.author.id !== message.member.guild.ownerID) return message.delete();
+        if (!args[0]) return message.reply('Please mention user to demote')
+
+        const channel = message.guild.channels.cache.find(cl => cl.id == '793417550993031198')
+
+        const member = message.guild.member(message.mentions.users.first())
+        const reason = args.slice(1).join(' ') || undefined
+
+        const trial_mod = message.guild.roles.cache.find(r => r.id === '793393550942404619')
+        const mod = message.guild.roles.cache.find(r => r.id === '793393474690482196')
+        const staff = message.guild.roles.cache.find(r => r.id === '793825819427471361')
+
+        if (!member.roles.cache.find(r => r.id == trial_mod.id || r.id == mod.id)) return message.reply(`This member doen't have any moderational roles`)
+
+        message.channel.send(`Demoting member...`).then(msg => {
+
+            member.roles.remove([trial_mod, mod, staff], reason)
+            const embed = new Discord.MessageEmbed()
+                .setColor(0xff0000)
+                .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
+                .setDescription(`**Demoted** ${member.user} *(ID ${member.user.id})*\n **Reason:** ${reason}`)
+                .setThumbnail(member.user.avatarURL())
+            channel.send(embed)
+
+            msg.edit(`**Member has been demoted**`)
+            msg.delete({ timeout: 3000 })
+        })
+
+
+        message.delete()
+    }
+})
+
 // ! Music
 client.on("message", async (message) => {
     if (!message.guild) return;
