@@ -64,7 +64,7 @@ const isInvite = async (guild, code) => {
 
 // ! Custom commmands
 client.on("message", async message => {
-    if (message.author.bot || !message.content.startsWith(prefix)) return
+    if (message.author.bot || !message.content.startsWith(prefix) || !message.guild) return
 
     const args = message.content.slice(prefix.length).split(/ +/)
     const command = args.shift().toLowerCase()
