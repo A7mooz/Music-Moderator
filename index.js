@@ -74,7 +74,7 @@ client.on("message", async message => {
 
     if (command == 'promote') {
         if (message.author.id !== message.member.guild.ownerID) return message.delete();
-        if (!args[0]) return message.reply('**<:no:811286748712796201> Please mention user to promote!**')
+        if (!args[0]) return message.channel.send('**<:no:811286748712796201> Please mention user to promote!**')
 
         const member = message.guild.member(message.mentions.users.first())
 
@@ -144,7 +144,7 @@ client.on("message", async message => {
 
     if (command == 'demote') {
         if (message.author.id !== message.member.guild.ownerID) return message.delete();
-        if (!args[0]) return message.channel.send('**<:no:811286748712796201> Please mention user to demote**')
+        if (!args[0]) return message.channel.send('**<:no:811286748712796201> Please mention user to demote!**')
 
         const channel = message.guild.channels.cache.find(cl => cl.id == '793417550993031198')
 
