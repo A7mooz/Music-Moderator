@@ -70,13 +70,15 @@ client.on("message", async message => {
     const command = args.shift().toLowerCase()
     const channel = message.guild.channels.cache.find(cl => cl.id === '793417550993031198')
 
+    const loading = message.guild.emojis.cache.find(e => e.id == '811275151811412018')
+
     if (command == 'promote') {
         if (message.author.id !== message.member.guild.ownerID) return message.delete();
-        if (!args[0]) return message.reply('Please mention user to promote!')
+        if (!args[0]) return message.reply('**<:no:811286748712796201> Please mention user to promote!**')
 
         const member = message.guild.member(message.mentions.users.first())
 
-        message.channel.send(">>> **[1] Internship moderation\n[2] Moderator\n[0] Cancel**").then(m => {
+        message.channel.send("***To choose a role, type a number from the list bellow:***\n >>> **[1] Internship moderation\n[2] Moderator\n[0] Cancel**").then(m => {
             message.channel.awaitMessages(msg => msg.author.id === message.author.id, {
                 max: 1,
                 time: 1000 * 60 * 2,
@@ -88,19 +90,19 @@ client.on("message", async message => {
                     c.first().delete().catch(e => null)
                     m.delete().catch(e => null)
 
-                    if (roles == null) return message.reply('**Invald number**')
-                    if (roles.length == 0) return message.reply("**Couldn't find this number**")
+                    if (roles == null) return message.channel.send('**<:no:811286748712796201> Invald number**')
+                    if (roles.length == 0) return message.channel.send("**<:no:811286748712796201> Couldn't find this number**")
                     else {
-                        message.channel.send(`Promoting member...`).then(msg => {
+                        message.channel.send(`**${loading} Promoting member...**`).then(msg => {
                             member.roles.add(roles)
-                            msg.edit(`**Member has been successfuly promoted**`)
-                            msg.delete({ timeout: 3000 })
+                            msg.edit(`**<:yes:811284624759586837> Member has been successfuly promoted**`)
+                            msg.delete({ timeout: 13000 })
                         })
 
                         const embed = new Discord.MessageEmbed()
                             .setColor(0x3BAEE5)
                             .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
-                            .setDescription(`**Promoted** ${member.user} *(ID ${member.user.id})*\n **to** <@&793393550942404619>`)
+                            .setDescription(`**🔺 Promoted** ${member.user} *(ID ${member.user.id})*\n **to** <@&793393550942404619>`)
                             .setThumbnail(member.user.avatarURL())
                         channel.send(embed)
                     }
@@ -110,19 +112,19 @@ client.on("message", async message => {
                     roles = ['793825819427471361', '793393474690482196']
                     c.first().delete().catch(e => null)
                     m.delete().catch(e => null)
-                    if (roles == null) return message.reply('**Invald number**')
-                    if (roles.length == 0) return message.reply("**Couldn't find this number**")
+                    if (roles == null) return message.channel.send('**<:no:811286748712796201> Invald number**')
+                    if (roles.length == 0) return message.channel.send("**<:no:811286748712796201> Couldn't find this number**")
                     else {
-                        message.channel.send(`Promoting member...`).then(msg => {
+                        message.channel.send(`**${loading} Promoting member...**`).then(msg => {
                             member.roles.add(roles)
-                            msg.edit(`**Member has been successfuly promoted**`)
-                            msg.delete({ timeout: 3000 })
+                            msg.edit(`**<:yes:811284624759586837> Member has been successfuly promoted**`)
+                            msg.delete({ timeout: 13000 })
                         })
 
                         const embed = new Discord.MessageEmbed()
                             .setColor(0x3BAEE5)
                             .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
-                            .setDescription(`**Promoted** ${member.user} *(ID ${member.user.id})*\n **to** <@&793393474690482196>`)
+                            .setDescription(`**🔺 Promoted** ${member.user} *(ID ${member.user.id})*\n **to** <@&793393474690482196>`)
                             .setThumbnail(member.user.avatarURL())
                         channel.send(embed)
                     }
@@ -132,7 +134,7 @@ client.on("message", async message => {
                 if (c.first().content === "0") {
                     c.first().delete().catch(e => null)
                     m.delete().catch(e => null)
-                    message.channel.send(`**Operation has been canceled successfully**`).then(msg => msg.delete({ timeout: 3000 }))
+                    message.channel.send(`**Operation has been canceled successfully**`).then(msg => msg.delete({ timeout: 13000 }))
                 }
             })
             message.delete()
@@ -142,31 +144,37 @@ client.on("message", async message => {
 
     if (command == 'demote') {
         if (message.author.id !== message.member.guild.ownerID) return message.delete();
-        if (!args[0]) return message.reply('Please mention user to demote')
+        if (!args[0]) return message.channel.send('**<:no:811286748712796201> Please mention user to demote**')
 
         const channel = message.guild.channels.cache.find(cl => cl.id == '793417550993031198')
 
         const member = message.guild.member(message.mentions.users.first())
         const reason = args.slice(1).join(' ') || undefined
 
+        const roles = [
+            '793825819427471361',
+            '793393550942404619',
+            '793393474690482196'
+        ]
+
         const trial_mod = message.guild.roles.cache.find(r => r.id === '793393550942404619')
         const mod = message.guild.roles.cache.find(r => r.id === '793393474690482196')
         const staff = message.guild.roles.cache.find(r => r.id === '793825819427471361')
 
-        if (!member.roles.cache.find(r => r.id == trial_mod.id || r.id == mod.id)) return message.reply(`This member doen't have any moderational roles`)
+        if (!member.roles.cache.find(r => r.id == trial_mod.id || r.id == mod.id)) return message.channel.send(`**<:no:811286748712796201> This member doen't have any moderational roles**`)
 
-        message.channel.send(`Demoting member...`).then(msg => {
+        message.channel.send(`**${loading} Demoting member...**`).then(msg => {
 
-            member.roles.remove([trial_mod, mod, staff], reason)
+            member.roles.remove(roles, reason)
             const embed = new Discord.MessageEmbed()
-                .setColor(0xff0000)
+                .setColor(0xFF8433)
                 .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
-                .setDescription(`**Demoted** ${member.user} *(ID ${member.user.id})*\n **Reason:** ${reason}`)
+                .setDescription(`**🔻 Demoted** ${member.user} *(ID ${member.user.id})*\n **Reason:** ${reason}`)
                 .setThumbnail(member.user.avatarURL())
             channel.send(embed)
 
-            msg.edit(`**Member has been demoted**`)
-            msg.delete({ timeout: 3000 })
+            msg.edit(`**<:yes:811284624759586837> Member has been demoted**`)
+            msg.delete({ timeout: 13000 })
         })
 
 
@@ -184,38 +192,40 @@ client.on("message", async (message) => {
 
     const voiceChannel = message.member.voice.channel
 
+    const no = message.guild.emojis.cache.find(e => e.name == 'no')
+
     const status = (queue) => `Volume: \`${queue.volume}%\` | Filter: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``;
 
     if (command == "play") {
-        if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+        if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
         distube.play(message, args.join(" "));
     }
 
     if (distube.isPlaying(message.guild.id)) {
         if (["repeat", "loop"].includes(command)) {
-            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
             let queue = distube.getQueue(message);
             distube.setRepeatMode(message, parseInt(args[0]));
             message.channel.send(`Loop mode set to \`${queue.repeatMode ? queue.repeatMode == 2 ? "All Queue" : "This Song" : "Off"}\``)
         }
 
         if (command == "stop") {
-            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
             distube.stop(message);
-            message.channel.send("Stopped the music!");
+            message.channel.send("**⏹ Stopped the music!**");
         }
 
         if (command == "skip") {
-            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
             distube.skip(message);
         }
 
         if (command == "queue") {
-            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
 
             let queue = distube.getQueue(message);
             const embed = new Discord.MessageEmbed()
-                .setTitle('Current queue:')
+                .setTitle('🔁 Current queue:')
                 .setDescription(queue.songs.map((song, id) =>
                     `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
                 ).slice(0, 10).join("\n"))
@@ -224,17 +234,17 @@ client.on("message", async (message) => {
         }
 
         if (command == "settings") {
-            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
             let queue = distube.getQueue(message);
             const embed = new Discord.MessageEmbed()
-                .setTitle("Current music settings")
+                .setTitle("⚙ Current music settings")
                 .setColor('PURPLE')
                 .setDescription(`${status(queue)}`)
             message.channel.send(embed)
         }
 
         if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
-            if (!voiceChannel) return message.reply("You must be in a voice channel to use this")
+            if (!voiceChannel) return message.channel.send(`**${no} You must be in a voice channel to use this**`)
             let filter = distube.setFilter(message, command);
             message.channel.send("Current queue filter: " + (filter || "Off"));
         }
@@ -249,27 +259,27 @@ distube
     .on("playSong", (message, queue, song) => {
         const embed = new Discord.MessageEmbed()
             .setColor('PURPLE')
-            .setDescription(`Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n`)
+            .setDescription(`🎵 Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n`)
             .setFooter(`${status(queue)}`)
         message.channel.send(embed)
     })
     .on("addSong", (message, queue, song) => {
         const embed = new Discord.MessageEmbed()
             .setColor('PURPLE')
-            .setDescription(`Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`)
+            .setDescription(`<:plus:811287970061484062> Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`)
         message.channel.send(embed)
     })
     .on("playList", (message, queue, playlist, song) => {
         const embed = new Discord.MessageEmbed()
             .setColor('PURPLE')
-            .setDescription(`Play \`${playlist.name}\` playlist (${playlist.songs.length} songs).\nRequested by: ${song.user}\nNow playing \`${song.name}\` - \`${song.formattedDuration}\`\n`)
+            .setDescription(`🎵 Play \`${playlist.name}\` playlist (${playlist.songs.length} songs).\nRequested by: ${song.user}\nNow playing \`${song.name}\` - \`${song.formattedDuration}\`\n`)
             .setFooter(`${status(queue)}`)
         message.channel.send(embed)
     })
     .on("addList", (message, queue, playlist) => {
         const embed = new Discord.MessageEmbed()
             .setColor('PURPLE')
-            .setDescription(`Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue\n`)
+            .setDescription(`<:plus:811287970061484062> Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue\n`)
             .setFooter(`${status(queue)}`)
         message.channel.send(embed)
     })
@@ -287,7 +297,7 @@ distube
     .on("searchCancel", (message) => message.channel.send(`Searching canceled`))
     .on("error", (message, e) => {
         console.error(e)
-        message.channel.send("An error encountered: " + e);
+        message.channel.send("⚠ An error encountered: " + e);
     });
 
 // ! Bot token :)
