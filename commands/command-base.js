@@ -53,11 +53,11 @@ module.exports = (client, commandOptions) => {
     let {
         commands,
         expectedArgs = '',
-        permissionError = 'You do not have permission to run this command.',
         minArgs = 0,
         maxArgs = null,
         permissions = [],
         requiredRoles = [],
+        modOnly,
         callback,
     } = commandOptions
 
@@ -77,7 +77,8 @@ module.exports = (client, commandOptions) => {
 
     // Listen for messages
     client.on('message', (message) => {
-        const { member, content, guild } = message
+
+        const { member, content, guild, channel } = message
 
         for (const alias of commands) {
             const command = `${prefix}${alias.toLowerCase()}`
@@ -86,13 +87,19 @@ module.exports = (client, commandOptions) => {
                 content.toLowerCase().startsWith(`${command} `) ||
                 content.toLowerCase() === command
             ) {
+                message.delete()
                 // A command has been ran
 
                 // Ensure the user has the required permissions
                 for (const permission of permissions) {
+                    if (modOnly) {
+                        if (!member.roles.cache.find(r => r.id === '793393550942404619' || r.id === '793393474690482196') && !member.hasPermission(permission)) {
+                            return message.delete()
+                        }
+                    }
+
                     if (!member.hasPermission(permission)) {
-                        message.reply(permissionError)
-                        return
+                        return message.delete()
                     }
                 }
 
@@ -106,7 +113,7 @@ module.exports = (client, commandOptions) => {
                         message.reply(
                             `You must have the "${requiredRole}" role to use this command.`
                         )
-                        return
+                        return message.delete()
                     }
                 }
 
@@ -122,15 +129,15 @@ module.exports = (client, commandOptions) => {
                     (maxArgs !== null && arguments.length > maxArgs)
                 ) {
                     message.reply(
-                        `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
+                        `Incorrect syntax! Use \`${prefix}${alias} ${expectedArgs}\``
                     )
-                    return
+                    return message.delete()
                 }
 
-                // Handle the custom command code
-                callback(message, arguments, arguments.join(' '), client)
+                const text = arguments.join(' ')
 
-                return
+                // Handle the custom command code
+                callback({ message, arguments, text, channel, guild, client, prefix })
             }
         }
     })
