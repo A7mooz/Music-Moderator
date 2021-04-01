@@ -11,6 +11,12 @@ module.exports = {
             .setColor('PURPLE')
             .setFooter('If you\'re on mobile just hold on the id text to copy it')
         if (message) {
+            if (message.channel.id !== '793398275814326272') {
+                message.delete()
+                message.reply(`Please use this command in <#793398275814326272>`).then(msg => msg.delete({ timeout: 5 * 1000 }))
+                return
+            }
+
             return message.reply(embed.setDescription(`${message.author.id}`))
         }
 
