@@ -1,17 +1,19 @@
 const { MessageEmbed } = require("discord.js")
 
 module.exports = {
-    slash: true,
+    slash: 'both',
     testOnly: true,
     description: 'Cheks for your id',
     category: 'Info',
-    run: ({ interaction, args }) => {
+    run: ({ message, interaction, args }) => {
         const embed = new MessageEmbed()
             .setTitle('🆔 Your ID')
             .setColor('PURPLE')
-            .setDescription(`${interaction.member.user.id}`)
-            .setFooter('If you on mobile hold on the id text to copy it')
+            .setFooter('If you\'re on mobile just hold on the id text to copy it')
+        if (message) {
+            return message.reply(embed.setDescription(`${message.author.id}`))
+        }
 
-        return embed
+        return embed.setDescription(`${interaction.member.user.id}`)
     }
 }
