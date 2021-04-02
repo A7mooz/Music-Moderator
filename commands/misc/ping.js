@@ -2,10 +2,8 @@ module.exports = {
     commands: 'ping',
     description: 'Shows bot\'s latency',
     category: 'Misc',
-    callback: ({ message, arguments, text, client }) => {
-        const pinging = message.guild.emojis.cache.find(e => e.id == '811279125116485692')
-
-        message.channel.send(`**${pinging} Calculating ping...**`).then(msg => {
+    callback: ({ message, args, text, client }) => {
+        message.channel.send(`**<a:pinging:811279125116485692> Calculating ping...**`).then(msg => {
             const ping = msg.createdTimestamp - message.createdTimestamp
 
             msg.edit(`Bot latency: \`${ping}ms\`, API Latency: \`${client.ws.ping}ms\``)

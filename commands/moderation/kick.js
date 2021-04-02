@@ -9,14 +9,14 @@ module.exports = {
     // minArgs: 1,
     permissions: ['KICK_MEMBERS'],
     modOnly: true,
-    callback: async ({ message, arguments, text, client }) => {
+    callback: async ({ message, args, text, client }) => {
 
         const timeOut = 1000 * 5
 
         const channel = message.guild.channels.cache.find(cl => cl.id == modLog)
 
-        const user = message.mentions.users.first() || arguments[0]
-        const reason = arguments.slice(1).join(' ') || undefined
+        const user = message.mentions.users.first() || args[0]
+        const reason = args.slice(1).join(' ') || undefined
 
         if (user) {
             const member = await message.guild.members.fetch(user)

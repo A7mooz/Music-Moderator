@@ -3,9 +3,9 @@ module.exports = client => {
         if (message.author.bot) return
         if (message.channel.id !== '823518103589093376') return
 
-        let bannedWords = ['fuck', 'bitch', 'asshole', 'cock', 'puss', 'nigg', 'shit', 'sh!t', '$#!t', 's#!t', 'sh*t', 'sh1t', 'porn', 'rapin', 'cummin', 'dick', 'blowjob', 'cunt', 'cnut', 'fuk', 'b!tch', 'b1tch', 'c0ck', 'whore', 'fook', 'doggy style', 'belowjob', 'fock', 'grabass', 'cummi', 'commy', 'f***', 'tit', 'horn', 'pu$$', 'fug', 'f u c k', 'bitsh', 'bish', 'fick', 'feck', 'f*ck', 'cumshot', 'fok', 'boob', 'bootie', 'booty', 'kock', 'trann', 'buttholes']
+        let bannedWords = ['fuck', 'bitch', 'asshole', 'cock', 'puss', 'nigg', 'shit', 'sh!t', '$#!t', 's#!t', 'sh*t', 'sh1t', 'porn', 'rapin', 'cummin', 'dick', 'blowjob', 'cunt', 'cnut', 'fuk', 'b!tch', 'b1tch', 'c0ck', 'whore', 'fook', 'doggy style', 'belowjob', 'fock', 'grabass', 'cummi', 'commy', 'f***', 'horn', 'pu$$', 'fug', 'f u c k', 'bitsh', 'bish', 'fick', 'feck', 'f*ck', 'cumshot', 'fok', 'boob', 'bootie', 'booty', 'kock', 'trann', 'buttholes']
 
-        let exactWords = ['hoe', 'hoes', 'cum', 'cums', 'rape', 'rapes', 'ass', 'booti', 'pp', 'pps', 'sex', 'sexual', 'sexually', 'sexuality', 'butt', 'butts', 'shat']
+        let exactWords = ['hoe', 'hoes', 'cum', 'cums', 'rape', 'rapes', 'ass', 'booti', 'pp', 'pps', 'sex', 'sexual', 'sexually', 'sexuality', 'butt', 'butts', 'shat', 'tit', 'tits']
 
         let isBadWord = false
 

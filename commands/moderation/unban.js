@@ -7,7 +7,7 @@ module.exports = {
     description: 'Unbans a user form the guild',
     // expectedArgs: '<User:Mention/ID> [Reason:Text]',
     // minArgs: 1,
-    callback: ({ message, arguments, text, client }) => {
+    callback: ({ message, args, text, client }) => {
 
         const reqRoles = modRoles.join('&&')
 
@@ -16,8 +16,8 @@ module.exports = {
 
         const channel = message.guild.channels.cache.find(cl => cl.id == modLog)
 
-        const user = arguments[0]
-        const reason = arguments.slice(1).join(' ') || undefined
+        const user = args[0]
+        const reason = args.slice(1).join(' ') || undefined
 
         if (user) {
             const member = message.guild.fetchBans(user)
