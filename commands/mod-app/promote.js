@@ -2,6 +2,7 @@ module.exports = {
     commands: ['promote'],
     guidOnly: true,
     ownerOnly: true,
+    discription: 'promote a member',
     callback: ({ message, args }) => {
         const timeOut = 1000 * 5
 
@@ -12,7 +13,7 @@ module.exports = {
 
         if (!member) return message.reply("Can't find that member!").then(msg => msg.delete({ timeout: timeOut }))
 
-        message.channel.send("***To choose a role, type a number from the list bellow:***\n > **[1] Internship moderation\n > [2] Moderator\n >[0] Cancel**").then(m => {
+        message.channel.send("***To choose a role, type a number from the list bellow:***\n > **[1] Internship moderation\n > [2] Moderator\n > [0] Cancel**").then(m => {
             message.channel.awaitMessages(msg => msg.author.id === message.author.id, {
                 max: 1,
                 time: 1000 * 60 * 2,
@@ -86,7 +87,6 @@ module.exports = {
                     message.channel.send(`**Operation has been canceled successfully**`).then(msg => msg.delete({ timeout: timeOut }))
                 }
             })
-            message.delete()
         })
     }
 }

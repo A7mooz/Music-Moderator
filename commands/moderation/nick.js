@@ -1,6 +1,7 @@
 module.exports = {
     commands: ['nick'],
     permissions: ['MANAGE_NICKNAMES'],
+    discription: 'Resets or change someone\'s nickname',
     guidOnly: true,
     modOnly: true,
     callback: ({ message, args, guild }) => {
@@ -13,7 +14,7 @@ module.exports = {
 
         if (args.length === 1) {
             member.setNickname('')
-            message.reply('Resetted!')
+            message.reply('Reset!')
             return
         }
 

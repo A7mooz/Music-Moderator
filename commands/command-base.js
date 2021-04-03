@@ -97,9 +97,11 @@ module.exports = (client, commandOptions) => {
                 message.delete().then(() => {
 
                     // Ensure that the message meber is form the owners
-                    for (i in owners) {
-                        if (member.user.id !== owners[i]) {
-                            return
+                    if (ownerOnly) {
+                        for (i in owners) {
+                            if (member.user.id !== owners[i]) {
+                                return
+                            }
                         }
                     }
 

@@ -2,6 +2,7 @@ module.exports = {
     commands: ['demote'],
     guidOnly: true,
     ownerOnly: true,
+    discription: 'demote a member',
     callback: ({ message, args }) => {
         const timeOut = 1000 * 5
 
