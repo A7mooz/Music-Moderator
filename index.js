@@ -1,9 +1,8 @@
-//Main Packages
+// Main Packages
 const Discord = require('discord.js')
 const client = new Discord.Client()
 
-//Custom constants
-const { prefix } = require('./config.json')
+// Loaders
 const loadCommand = require('./loaders/load-command')
 const loadFeatures = require('./loaders/load-features')
 

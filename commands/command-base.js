@@ -88,119 +88,124 @@ module.exports = (client, commandOptions) => {
                 content.toLowerCase() === command
             ) {
                 // A command has been ran
-                message.delete()
 
                 // Ensure that the command will be ran only in a guild
                 if (guildOnly) {
                     if (!guild) return
                 }
 
-                // Ensure that the message meber is form the owners
-                for (i in owners) {
-                    if (member.user.id !== owners[i]) {
+                message.delete().then(() => {
+
+                    // Ensure that the message meber is form the owners
+                    for (i in owners) {
+                        if (member.user.id !== owners[i]) {
+                            return
+                        }
+                    }
+
+                    // Ensure we are in the right channel
+                    if (requiredChannel && requiredChannel !== channel.name) {
+                        //<#ID>
+                        const foundChannel = guild.channels.cache.find((channel) => {
+                            return channel.name === requiredChannel
+                        })
+
+                        message.reply(
+                            `You can only run this command inside of <#${foundChannel.id}>.`
+                        )
                         return
                     }
-                }
 
-                // Ensure we are in the right channel
-                if (requiredChannel && requiredChannel !== channel.name) {
-                    //<#ID>
-                    const foundChannel = guild.channels.cache.find((channel) => {
-                        return channel.name === requiredChannel
-                    })
+                    // Ensure the user has the required permissions
+                    for (const permission of permissions) {
+                        if (modOnly) {
+                            if (modOnly === true) {
+                                if (!member.roles.cache.find(r => modRoles.includes(r.id)) && !member.hasPermission(permission)) {
+                                    return
+                                }
+                            }
 
-                    message.reply(
-                        `You can only run this command inside of <#${foundChannel.id}>.`
-                    )
-                    return
-                }
+                            for (i in modOnly) {
+                                if (!member.roles.cache.find(r => r.id === modOnly[i]) && !member.hasPermission(permission)) {
+                                    return
+                                }
+                            }
+                        } else if (!member.hasPermission(permission)) {
+                            return
+                        }
+                    }
 
-                // Ensure the user has the required permissions
-                for (const permission of permissions) {
-                    if (modOnly) {
+                    if (!permissions.length) {
                         if (modOnly === true) {
-                            if (!member.roles.cache.find(r => modRoles.includes(r.id)) && !member.hasPermission(permission)) {
+                            if (!member.roles.cache.find(r => modRoles.includes(r.id))) {
                                 return
                             }
                         }
 
                         for (i in modOnly) {
-                            if (!member.roles.cache.find(r => r.id === modOnly[i]) && !member.hasPermission(permission)) {
+                            if (!member.roles.cache.find(r => r.id === modOnly[i])) {
                                 return
                             }
                         }
-                    } else if (!member.hasPermission(permission)) {
+                    }
+
+                    // Ensure the user has the required roles
+                    for (const requiredRole of requiredRoles) {
+                        const role = guild.roles.cache.find(
+                            (role) => role.name === requiredRole
+                        )
+
+                        if (!role || !member.roles.cache.has(role.id)) {
+                            message.reply(
+                                `You must have the "${requiredRole}" role to use this command.`
+                            )
+                            return
+                        }
+                    }
+
+                    // Ensure the user has not ran this command too frequently
+                    //guildId-userId-command
+                    let cooldownString = `${guild.id}-${member.id}-${commands[0]}`
+
+                    if (cooldown > 0 && recentlyRan.includes(cooldownString)) {
+                        message.reply('You cannot use that command so soon, please wait.')
                         return
                     }
-                }
 
-                if (!permissions.length) {
-                    if (modOnly === true) {
-                        if (!member.roles.cache.find(r => modRoles.includes(r.id))) {
-                            return
-                        }
-                    }
+                    // Split on any number of spaces
+                    const args = content.split(/[ ]+/)
 
-                    for (i in modOnly) {
-                        if (!member.roles.cache.find(r => r.id === modOnly[i])) {
-                            return
-                        }
-                    }
-                }
+                    // Remove the command which is the first index
+                    args.shift()
 
-                // Ensure the user has the required roles
-                for (const requiredRole of requiredRoles) {
-                    const role = guild.roles.cache.find(
-                        (role) => role.name === requiredRole
-                    )
-
-                    if (!role || !member.roles.cache.has(role.id)) {
+                    // Ensure we have the correct number of arguments
+                    if (
+                        args.length < minArgs ||
+                        (maxArgs !== null && args.length > maxArgs)
+                    ) {
                         message.reply(
-                            `You must have the "${requiredRole}" role to use this command.`
+                            `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
                         )
                         return
                     }
-                }
 
-                // Ensure the user has not ran this command too frequently
-                //guildId-userId-command
-                let cooldownString = `${guild.id}-${member.id}-${commands[0]}`
+                    if (cooldown > 0) {
+                        recentlyRan.push(cooldownString)
 
-                if (cooldown > 0 && recentlyRan.includes(cooldownString)) {
-                    message.reply('You cannot use that command so soon, please wait.')
-                    return
-                }
+                        setTimeout(() => {
+                            recentlyRan = recentlyRan.filter((string) => {
+                                return string !== cooldownString
+                            })
+                        }, 1000 * cooldown)
+                    }
 
-                // Split on any number of spaces
-                const args = content.split(/[ ]+/)
+                    let timeOut = 1000 * 5
 
-                // Remove the command which is the first index
-                args.shift()
+                    const text = args.join(' ')
 
-                // Ensure we have the correct number of arguments
-                if (
-                    args.length < minArgs ||
-                    (maxArgs !== null && args.length > maxArgs)
-                ) {
-                    message.reply(
-                        `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
-                    )
-                    return
-                }
-
-                if (cooldown > 0) {
-                    recentlyRan.push(cooldownString)
-
-                    setTimeout(() => {
-                        recentlyRan = recentlyRan.filter((string) => {
-                            return string !== cooldownString
-                        })
-                    }, 1000 * cooldown)
-                }
-
-                const text = args.join(' ')
-                // Handle the custom command code
-                callback({ message, args, text, client, prefix, channel, guild })
+                    // Handle the custom command code
+                    callback({ message, args, text, client, prefix, channel, guild })
+                })
             }
         }
     })

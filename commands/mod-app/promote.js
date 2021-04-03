@@ -1,5 +1,6 @@
 module.exports = {
     commands: ['promote'],
+    guidOnly: true,
     ownerOnly: true,
     callback: ({ message, args }) => {
         const timeOut = 1000 * 5

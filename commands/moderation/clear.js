@@ -3,19 +3,16 @@ module.exports = {
     category: 'Moderation',
     description: 'Clears amount of messages form a channel',
     permissions: ['MANAGE_MESSAGES'],
+    guidOnly: true,
     modOnly: true,
     callback: ({ args, channel, message, prefix, client }) => {
 
         const timeOut = 1000 * 5
 
         const user = message.mentions.users.first() || message.guild.member(args[1])
-        const num = Number(args[0])
+        const num = Number(args[1])
 
-        if (!isNaN(args[0]) && args.length === 1) {
-            if (isNaN(num)) return message.reply('Please provide a valid number of messages to delete').then(msg => msg.delete({ timeout: timeOut }))
-
-            channel.bulkDelete(num)
-        } else if (user) {
+        if (user) {
             if (isNaN(num)) return message.reply('Please provide a valid number of messages to delete').then(msg => msg.delete({ timeout: timeOut }))
             channel.messages.fetch({
                 limit: num
@@ -24,7 +21,8 @@ module.exports = {
                 messages.filter(m => m.author.id === user.id).forEach(msg => userMessages.push(msg))
                 channel.bulkDelete(userMessages, true)
             })
-        } else if (args[0] === 'bots') {
+        }
+        if (args[0] === 'bots') {
             channel.messages.fetch({
                 limit: 100
             }).then((messages) => {
@@ -32,7 +30,8 @@ module.exports = {
                 messages.filter(m => m.author.bot).forEach(msg => botsMessages.push(msg))
                 channel.bulkDelete(botsMessages, true)
             })
-        } else if (args[0] === 'bot') {
+        }
+        if (args[0] === 'bot') {
             channel.messages.fetch({
                 limit: 100
             }).then((messages) => {
@@ -44,7 +43,8 @@ module.exports = {
                 channel.bulkDelete(clientMessages, true)
                 channel.bulkDelete(botUsages, true)
             })
-        } else if (['-r', 'regex'].includes(args[0])) {
+        }
+        if (['-r', 'regex'].includes(args[0])) {
             if (isNaN(args[2])) return message.reply('Please provide a valid number of messages to delete')
             channel.messages.fetch({
                 limit: args[2]
@@ -55,6 +55,14 @@ module.exports = {
                 channel.bulkDelete(rMessages, true)
             })
         }
+
+
+        if (!isNaN(args[0]) && args.length === 1) {
+            if (isNaN(args[0])) return message.reply('Please provide a valid number of messages to delete').then(msg => msg.delete({ timeout: timeOut }))
+
+            channel.bulkDelete(args[0])
+        }
+
 
     }
 

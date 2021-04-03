@@ -5,9 +5,8 @@ module.exports = {
     commands: 'kick',
     category: 'Moderation',
     description: 'Kicks a member form the guild',
-    // expectedArgs: '<User:Mention/ID> [Reason:Text]',
-    // minArgs: 1,
     permissions: ['KICK_MEMBERS'],
+    guidOnly: true,
     modOnly: true,
     callback: async ({ message, args, text, client }) => {
 
@@ -27,7 +26,7 @@ module.exports = {
                 if (!member.kickable) return message.reply(`Can't kick that member, please check my role position`).then(msg => msg.delete({ timeout: timeOut * 3 }))
 
                 member.kick(reason).then(() => {
-                    message.reply(`You kicked \`${member.id}\`\nReason: \`${reason}\``).then(msg => msg.delete({ timeout: timeOut }))
+                    message.channel.send(`Kicked ${member.user} successfully!`)
 
                     const embed = new MessageEmbed()
                         .setColor('#FF5733')

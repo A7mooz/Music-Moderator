@@ -3,6 +3,7 @@ module.exports = {
     category: 'Moderation',
     description: 'Sets a slowmode for the channel',
     permissions: ['ADMINISTRATOR'],
+    guidOnly: true,
     modOnly: true,
     callback: ({ message, args, channel, client }) => {
         const timeOut = 5 * 1000

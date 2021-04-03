@@ -1,6 +1,7 @@
 module.exports = {
     commands: ['nick'],
     permissions: ['MANAGE_NICKNAMES'],
+    guidOnly: true,
     modOnly: true,
     callback: ({ message, args, guild }) => {
         const user = message.mentions.users.first() || args[0]
