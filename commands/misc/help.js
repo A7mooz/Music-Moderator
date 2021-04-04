@@ -10,7 +10,7 @@ module.exports = {
     permissions: ['ADMINISTRATOR'],
     callback: ({ message, prefix }) => {
         let embed = new MessageEmbed()
-            .setTitle('These are all supported commands')
+            .setTitle('HELP MENU')
             .setColor('PURPLE')
             .setFooter(`required: \`<>\` | optional: \`()\` | required in some cases or subcommands: \`[]\` | required in defrent args or subcommands: \`{}\``)
 
