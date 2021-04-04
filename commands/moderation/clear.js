@@ -1,6 +1,7 @@
 module.exports = {
     commands: ['clear', 'cl', 'purge'],
     category: 'Moderation',
+    expectedArgs: '<subcommand/user/amount> [amount]',
     description: 'Clears amount of messages form a channel',
     permissions: ['MANAGE_MESSAGES'],
     guidOnly: true,

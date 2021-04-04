@@ -3,6 +3,7 @@ module.exports = {
     guidOnly: true,
     ownerOnly: true,
     discription: 'promote a member',
+    expectedArgs: '<user: Mention/ID>',
     callback: ({ message, args }) => {
         const timeOut = 1000 * 5
 

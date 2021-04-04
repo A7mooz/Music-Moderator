@@ -1,7 +1,8 @@
 module.exports = {
     commands: ['nick'],
     permissions: ['MANAGE_NICKNAMES'],
-    discription: 'Resets or change someone\'s nickname',
+    expectedArgs: '<user: Mention/ID> (nickname: string)',
+    description: 'Resets or change someone\'s nickname',
     guidOnly: true,
     modOnly: true,
     callback: ({ message, args, guild }) => {

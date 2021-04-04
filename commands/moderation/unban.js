@@ -4,6 +4,7 @@ const { modLog } = require('../../config.json')
 module.exports = {
     commands: 'unban',
     category: 'Moderation',
+    expectedArgs: '<user: ID> (reason: String)',
     description: 'Unbans a user form the guild',
     permissions: ['ADMINISTRATOR'],
     guidOnly: true,

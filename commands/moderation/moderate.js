@@ -1,7 +1,8 @@
 module.exports = {
     commands: ['moderate'],
     permissions: ['MANAGE_NICKNAMES'],
-    discription: 'Moderates a user\'s nickname to be mentionable',
+    expectedArgs: '<user: Mention/ID>',
+    description: 'Moderates a user\'s nickname to be mentionable',
     guildOnly: true,
     modOnly: true,
     callback: ({ message, args, guild }) => {

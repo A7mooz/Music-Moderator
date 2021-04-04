@@ -5,14 +5,14 @@ const { MessageEmbed } = require('discord.js')
 module.exports = {
     commands: ['help', 'h'],
     description: "Describes all of this bot's commands",
+    guildOnly: true,
     modOnly: true,
     permissions: ['ADMINISTRATOR'],
     callback: ({ message, prefix }) => {
         let embed = new MessageEmbed()
             .setTitle('These are all supported commands')
             .setColor('PURPLE')
-            .setFooter(message.author.tag)
-            .setTimestamp(message.ceatedTimeStamp)
+            .setFooter(`required: \`<>\` | optional: \`()\` | required in some cases or subcommands: \`[]\` | required in defrent args or subcommands: \`{}\``)
 
         const commands = loadCommands()
 
@@ -25,7 +25,7 @@ module.exports = {
 
                 if (ownerOnly) {
                     for (i in owners) {
-                        if (!message.member.id === owners[i]) {
+                        if (message.member.id === owners[i]) {
                             isOwner = false
                             break
                         }
@@ -45,7 +45,7 @@ module.exports = {
             const args = command.expectedArgs ? ` ${command.expectedArgs}` : ''
             const { description } = command
 
-            embed.addField(mainCommand, `description: ${description}\n usage: ${prefix}${mainCommand}${args}`)
+            embed.addField(mainCommand, `description: ${description} \nusage: ${prefix}${mainCommand}${args}`)
         }
 
         message.channel.send(embed)

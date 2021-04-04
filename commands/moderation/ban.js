@@ -6,6 +6,7 @@ module.exports = {
     description: 'Bans a user form the guild',
     category: 'Moderation',
     permissions: ['BAN_MEMBERS'],
+    expectedArgs: '<user: Mention/Name/ID> (reason: string)',
     guildOnly: true,
     modOnly: true,
     callback: async ({ message, args, text, client, timeOut }) => {

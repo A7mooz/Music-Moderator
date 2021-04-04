@@ -5,6 +5,7 @@ module.exports = {
     commands: 'kick',
     category: 'Moderation',
     description: 'Kicks a member form the guild',
+    expectedArgs: '<user: Mention/ID> (reason)',
     permissions: ['KICK_MEMBERS'],
     guidOnly: true,
     modOnly: true,
