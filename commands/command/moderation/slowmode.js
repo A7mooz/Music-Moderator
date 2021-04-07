@@ -7,6 +7,8 @@ module.exports = {
     guidOnly: true,
     modOnly: true,
     callback: ({ message, args, channel, client }) => {
+        message.delete()
+
         const timeOut = 5 * 1000
 
         if (!args.length) return channel.send(`Current slowmode is ${channel.rateLimitPerUser} seconds!`)

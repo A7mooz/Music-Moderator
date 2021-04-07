@@ -6,6 +6,7 @@ module.exports = {
     guildOnly: true,
     modOnly: true,
     callback: ({ message, args, guild }) => {
+        message.delete()
 
         const user = message.mentions.users.first() || args[0]
         const member = guild.member(user)

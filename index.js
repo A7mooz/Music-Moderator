@@ -1,21 +1,24 @@
 require('module-alias/register')
-// Main Packages
-const Discord = require('discord.js')
-const client = new Discord.Client()
+require('dotenv').config()
 
-// Loaders
-const loadCommands = require('@root/loaders/load-commands')
-const loadFeatures = require('./loaders/load-features')
+const { MongoClient } = require('mongodb')
+const MongoDBProvider = require('commando-provider-mongo')
+const Commando = require('discord.js-commando')
+const client = new Commando.Client()
+
+
+const loadCommands = require('@root/commands/load-commands')
+const loadFeatures = require('@root/features/load-features')
+const mongo = require('@util/mongo')
 
 // ! Ready Event
 client.on('ready', async () => {
     console.log(`${client.user.tag} client is ready!`)
 
+    await mongo()
+
     loadCommands(client)
     loadFeatures(client)
 })
-
-// ! Bot token :)
-require('dotenv').config()
 
 client.login(process.env.token)

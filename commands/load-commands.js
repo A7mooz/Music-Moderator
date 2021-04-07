@@ -3,7 +3,7 @@ const fs = require('fs')
 
 module.exports = (client) => {
     const baseFile = 'command-base.js'
-    const commandBase = require(`../commands/${baseFile}`)
+    const commandBase = require(`./${baseFile}`)
 
     const commands = []
 
@@ -23,7 +23,7 @@ module.exports = (client) => {
         }
     }
 
-    readCommands('../commands/')
+    readCommands('.')
 
     return commands
 }

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const modLog = process.env.modLog
+const { modLog } = require('@root/config.json')
 
 module.exports = {
     commands: 'ban',
@@ -10,6 +10,7 @@ module.exports = {
     guildOnly: true,
     modOnly: true,
     callback: async ({ message, args, text, client, timeOut }) => {
+        message.delete()
 
         const channel = message.guild.channels.cache.find(cl => cl.id == modLog)
 

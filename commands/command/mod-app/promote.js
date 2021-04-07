@@ -1,3 +1,5 @@
+const { modLog } = require('@root/config.json')
+
 module.exports = {
     commands: ['promote'],
     guidOnly: true,
@@ -6,8 +8,11 @@ module.exports = {
     expectedArgs: '<user: Mention/ID>',
     callback: ({ message, args }) => {
         const timeOut = 1000 * 5
+        message.delete()
 
         if (!args.length) return message.channel.send('**<:no:811286748712796201> Please mention user to promote!**')
+
+        const channel = message.guild.channels.cache.find(cl => cl.id == modLog)
 
         const user = message.mentions.users.first() || args[0]
         const member = message.guild.member(user)

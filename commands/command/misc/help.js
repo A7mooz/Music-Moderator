@@ -1,16 +1,16 @@
-const loadCommands = require('@root/loaders/load-commands')
+const loadCommands = require('@root/commands/load-commands')
 const { owners } = require('@root/config.json')
 const { MessageEmbed } = require('discord.js')
 
 module.exports = {
-    commands: ['help', 'h'],
+    commands: ['help'],
     description: "Describes all of this bot's commands",
     guildOnly: true,
     modOnly: true,
     permissions: ['ADMINISTRATOR'],
     callback: ({ message, prefix }) => {
         let embed = new MessageEmbed()
-            .setTitle('HELP MENU')
+            .setTitle('Help Menu')
             .setColor('PURPLE')
             .setFooter(`required: \`<>\` | optional: \`()\` | required in some cases or subcommands: \`[]\` | required in defrent args or subcommands: \`{}\``)
 
@@ -44,6 +44,8 @@ module.exports = {
                     : command.commands[0]
             const args = command.expectedArgs ? ` ${command.expectedArgs}` : ''
             const { description } = command
+
+            if (mainCommand === 'help') continue
 
             embed.addField(mainCommand, `description: ${description} \nusage: ${prefix}${mainCommand}${args}`)
         }

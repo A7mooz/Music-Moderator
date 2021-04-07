@@ -13,6 +13,8 @@ module.exports = {
 
         const timeOut = 1000 * 5
 
+        message.delete()
+
         const channel = message.guild.channels.cache.find(cl => cl.id == modLog)
 
         const user = message.mentions.users.first() || args[0]
