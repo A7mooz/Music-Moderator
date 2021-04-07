@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const modLog = process.env.modLog
+const { modLog } = require('@root/config.json')
 
 module.exports = {
     commands: 'kick',
