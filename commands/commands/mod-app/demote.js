@@ -4,7 +4,7 @@ module.exports = {
     commands: ['demote'],
     guidOnly: true,
     ownerOnly: true,
-    discription: 'demote a member',
+    description: 'demote a member',
     expectedArgs: '<user: Mention/ID> (reason: string)',
     callback: ({ message, args }) => {
         const timeOut = 1000 * 5
