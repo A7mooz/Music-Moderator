@@ -1,5 +1,5 @@
 module.exports = {
-    commands: ['moderate'],
+    commands: ['moderate', 'mod'],
     permissions: ['MANAGE_NICKNAMES'],
     expectedArgs: '<user: Mention/ID>',
     description: 'Moderates a user\'s nickname to be mentionable',

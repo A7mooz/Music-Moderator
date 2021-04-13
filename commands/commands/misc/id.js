@@ -12,6 +12,7 @@ module.exports = {
 
         if (message.channel.id !== '793398275814326272') {
             message.reply(`Please use this command in <#793398275814326272>`).then(msg => msg.delete({ timeout: 5 * 1000 }))
+            message.delete()
             return
         }
 

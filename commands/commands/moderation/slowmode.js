@@ -1,7 +1,7 @@
 module.exports = {
     commands: ['slowmode', 'sm', 'slow'],
     category: 'Moderation',
-    expectedArgs: '(subcommand: +/-) {ratelimit: Number}',
+    expectedArgs: '(+/-) {Number}',
     description: 'Sets a slowmode for the channel',
     permissions: ['ADMINISTRATOR'],
     guidOnly: true,

@@ -2,6 +2,8 @@ module.exports = {
     commands: ['clear', 'cl', 'purge'],
     category: 'Moderation',
     expectedArgs: '<subcommand/user/amount> [amount]',
+    subcommands: ['`bot`: deletes client bot\'s message and the messages that starts with the prefix', '`bots`: deletes messages that are written by a bot', '`-r/regex`: deletes a message that includes some string'],
+    examples: ['bot', '@someone 50', '479269670998900736 100', 'bots', '-r hi 100', '10'],
     description: 'Clears amount of messages form a channel',
     permissions: ['MANAGE_MESSAGES'],
     guidOnly: true,
@@ -28,7 +30,7 @@ module.exports = {
                     channel.bulkDelete(userMessages, true)
                 })
             }
-            if (args[0] === 'bots') {
+            if (args[0].toLowerCase() === 'bots') {
                 channel.messages.fetch({
                     limit: 100
                 }).then((messages) => {
@@ -37,20 +39,19 @@ module.exports = {
                     channel.bulkDelete(botsMessages, true)
                 })
             }
-            if (args[0] === 'bot') {
+            if (args[0].toLowerCase() === 'bot') {
                 channel.messages.fetch({
                     limit: 100
                 }).then((messages) => {
-                    const botUsages = []
-                    const clientMessages = []
+                    let botUsages = []
+                    let clientMessages = []
 
                     messages.filter(m => m.content.startsWith(prefix)).forEach(msg => botUsages.push(msg))
                     messages.filter(m => m.author.id == client.user.id).forEach(msg => clientMessages.push(msg))
-                    channel.bulkDelete(clientMessages, true)
-                    channel.bulkDelete(botUsages, true)
+                    channel.bulkDelete(clientMessages.concat(botUsages), true)
                 })
             }
-            if (['-r', 'regex'].includes(args[0])) {
+            if (['-r', 'regex'].includes(args[0].toLowerCase())) {
                 Math.floor(args[2])
                 if (args[2] > 100) args[2] = 100
                 if (args[2] < 1) args[2] = 1

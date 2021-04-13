@@ -100,7 +100,7 @@ module.exports = (client, commandOptions) => {
                 if (ownerOnly) {
                     for (i in owners) {
                         if (member.user.id !== owners[i]) {
-                            return
+                            return message.delete()
                         }
                     }
                 }
@@ -206,7 +206,7 @@ module.exports = (client, commandOptions) => {
                 const text = args.join(' ')
 
                 // Handle the custom command code
-                callback({ message, args, text, client, prefix, channel, guild })
+                callback({ message, args, text, client, prefix, channel, guild, timeOut })
 
             }
         }
