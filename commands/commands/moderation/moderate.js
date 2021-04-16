@@ -16,16 +16,16 @@ module.exports = {
 
         function moderate(length) {
             var result = ''
-            var characters = 'abcdefghijklmnopqrstuvwxyz0123456789'
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
-            for (var i = 0; i < length; i++) {
+            for (var i = 0; i <= length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * characters.length))
             }
 
             return result
         }
 
-        member.setNickname(`Moderated Nickname ${moderate(6)}`).then(nick => {
+        member.setNickname(`Moderated Nickname ${moderate(9)}`).then(nick => {
         message.reply(`Changed to \`${nick.displayName}\``)
         })
 
