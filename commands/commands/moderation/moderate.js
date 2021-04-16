@@ -26,7 +26,7 @@ module.exports = {
         }
 
         message.reply('Changed!')
-        member.setNickname(`Moderated Nickname ${moderate(9)}`)
+        member.setNickname(`Moderated Nickname ${moderate(5)}`)
 
     }
 }
