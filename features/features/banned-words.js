@@ -1,12 +1,13 @@
 module.exports = client => {
 
-    let bannedWords = ['fuck', 'bitch', 'asshole', 'cock', 'puss', 'nigg', 'shit', 'sh!t', '$#!t', 's#!t', 'sh*t', 'sh1t', 'porn', 'rapin', 'cummin', 'dick', 'blowjob', 'cunt', 'cnut', 'fuk', 'b!tch', 'b1tch', 'c0ck', 'whore', 'fook', 'doggy style', 'belowjob', 'fock', 'grabass', 'cummi', 'commy', 'f***', 'horn', 'pu$$', 'fug', 'f u c k', 'bitsh', 'bish', 'fick', 'feck', 'f*ck', 'cumshot', 'fok', 'boob', 'bootie', 'booty', 'kock', 'trann', 'buttholes']
+    let bannedWords = ['fuck', 'bitch', 'asshole', 'cock', 'puss', 'nigg', 'shit', 'sh!t', '$#!t', 's#!t', 'sh*t', 'sh1t', 'porn', 'rapin', 'cum', 'dick', 'blowjob', 'cunt', 'cnut', 'fuk', 'b!tch', 'b1tch', 'c0ck', 'whore', 'fook', 'doggy style', 'belowjob', 'fock', 'grabass', 'cummi', 'commy', 'f***', 'horn', 'pu$$', 'fug', 'f u c k', 'fvck', 'fvk', 'fuvk' 'bitsh', 'bish', 'fick', 'feck', 'f*ck', 'cumshot', 'fok', 'boob', 'booti', 'booty', 'kock', 'trann', 'buttholes']
 
-    let exactWords = ['hoe', 'hoes', 'cum', 'cums', 'rape', 'rapes', 'ass', 'booti', 'pp', 'pps', 'sex', 'sexual', 'sexually', 'sexuality', 'butt', 'butts', 'shat', 'tit', 'tits']
+    let exactWords = ['hoe', 'hoes', 'rape', 'rapes', 'ass', 'pp', 'pps', 'sex', 'sexual', 'sexually', 'sexuality', 'butt', 'butts', 'shat', 'tit', 'tits', 'niga']
 
     client.on('message', message => {
         if (message.author.bot) return
         if (message.channel.id !== '823518103589093376') return
+      const args = message.content.trim().split(/ +/g)
 
         let isBadWord = false
 
@@ -22,7 +23,7 @@ module.exports = client => {
         }
 
         for (var i in exactWords) {
-            if (message.content.toLowerCase().split(/ +/).includes(exactWords[i])) isBadWord = true
+            if (args.includes(exactWords[i])) isBadWord = true
         }
 
         // console.log(args);
@@ -46,7 +47,7 @@ module.exports = client => {
         }
 
         for (var i in exactWords) {
-            if (message.content.toLowerCase().split(/ +/).includes(exactWords[i])) isBadWord = true
+            if (message.content.toLowerCase().split(/ +/g).includes(exactWords[i])) isBadWord = true
         }
 
         // console.log(args);
