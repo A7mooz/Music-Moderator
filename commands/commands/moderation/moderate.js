@@ -16,7 +16,7 @@ module.exports = {
 
         function moderate(length) {
             var result = ''
-            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            var characters = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
             for (var i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * characters.length))
@@ -25,8 +25,9 @@ module.exports = {
             return result
         }
 
-        message.reply('Changed!')
-        member.setNickname(`Moderated Nickname ${moderate(5)}`)
+        member.setNickname(`Moderated Nickname ${moderate(5)}`).then(nick => {
+        message.reply(`Changed to ${nick}`)
+        })
 
     }
 }
