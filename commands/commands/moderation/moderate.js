@@ -25,7 +25,7 @@ module.exports = {
             return result
         }
 
-        member.setNickname(`Moderated Nickname ${moderate(5)}`).then(nick => {
+        member.setNickname(`Moderated Nickname ${moderate(6)}`).then(nick => {
         message.reply(`Changed to \`${nick}\``)
         })
 
