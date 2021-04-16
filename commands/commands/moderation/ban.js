@@ -18,7 +18,7 @@ module.exports = {
 
         if (!toBan) return message.reply("Can't find that user")
 
-        const reason = args[1] || "There was no reason!";
+        const reason = args.slice(1).join(' ') || "There was no reason!";
 
         toBan.ban({
             reason: reason
