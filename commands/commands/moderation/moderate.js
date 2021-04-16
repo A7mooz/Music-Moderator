@@ -14,18 +14,9 @@ module.exports = {
         if (!user) return message.reply('Please mention a user to moderate their nickname')
         if (!member) return message.reply("Can't find that member in this guild!")
 
-        function moderate(length) {
-            var result = ''
-            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        const moderate = Math.random().toString(36).substring(7)
 
-            for (var i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length))
-            }
-
-            return result
-        }
-
-        member.setNickname(`Moderated Nickname ${moderate(9)}`).then(nick => {
+        member.setNickname(`Moderated Nickname ${moderate}`).then(nick => {
         message.reply(`Changed to \`${nick.displayName}\``)
         })
 
