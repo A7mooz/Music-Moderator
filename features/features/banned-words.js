@@ -1,6 +1,6 @@
 module.exports = client => {
 
-    let bannedWords = ['fuck', 'bitch', 'asshole', 'cock', 'puss', 'nig', 'shit', 'sh!t', '$#!t', 's#!t', 'sh*t', 'sh1t', 'porn', 'rapin', 'cum', 'dick', 'blowjob', 'cunt', 'cnut', 'fuk', 'b!tch', 'b1tch', 'c0ck', 'whore', 'fook', 'doggy style', 'belowjob', 'fock', 'grabass', 'cummi', 'commy', 'f***', 'horn', 'pu$$', 'fug', 'f u c k', 'fvck', 'fvk', 'fuvk', 'bitsh', 'bish', 'fick', 'feck', 'f*ck', 'cumshot', 'fok', 'fuc', 'boob', 'booti', 'booty', 'kock', 'trann', 'buttholes', 'fag', 'puta', 'thot', 'asshat']
+    let bannedWords = ['fuck', 'bitch', 'asshole', 'cock', 'puss', 'nigg', 'shit', 'sh!t', '$#!t', 's#!t', 'sh*t', 'sh1t', 'porn', 'rapin', 'cum', 'dick', 'blowjob', 'cunt', 'cnut', 'fuk', 'b!tch', 'b1tch', 'c0ck', 'whore', 'fook', 'doggy style', 'belowjob', 'fock', 'grabass', 'cummi', 'commy', 'f***', 'horn', 'pu$$', 'fug', 'f u c k', 'fvck', 'fvk', 'fuvk', 'bitsh', 'bish', 'fick', 'feck', 'f*ck', 'cumshot', 'fok', 'fuc', 'boob', 'booti', 'booty', 'kock', 'trann', 'buttholes', 'fag', 'puta', 'thot', 'asshat']
 
     let exactWords = ['hoe', 'hoes', 'rape', 'rapes', 'ass', 'asses', 'pp', 'pps', 'sex', 'sexual', 'sexually', 'sexuality', 'butt', 'butts', 'shat', 'tit', 'tits']
 
