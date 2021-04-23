@@ -79,7 +79,6 @@ module.exports = {
 
         if (args[0]) {
             message.channel.send(`<:no:811286748712796201> I don't have command with name '${args[0]}'`)
-            console.log(commandNames);
             return
         }
 

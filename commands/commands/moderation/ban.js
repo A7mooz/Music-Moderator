@@ -6,6 +6,7 @@ module.exports = {
     description: 'Bans a user form the guild',
     category: 'Moderation',
     permissions: ['BAN_MEMBERS'],
+    minArgs: 1,
     expectedArgs: '<user: Mention/Name/ID> (reason: string)',
     guildOnly: true,
     modOnly: true,

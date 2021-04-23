@@ -1,4 +1,5 @@
-const { prefix, modRoles, owners } = require('../config.json')
+const { MessageEmbed } = require('discord.js')
+const { prefix, modRoles, owners, modLog } = require('../config.json')
 
 const validatePermissions = (permissions) => {
     const validPermissions = [
@@ -48,6 +49,9 @@ module.exports = (client, commandOptions) => {
     let {
         commands,
         expectedArgs = '',
+        description,
+        subcommands,
+        examples,
         modOnly,
         minArgs = 0,
         maxArgs = null,
@@ -93,7 +97,6 @@ module.exports = (client, commandOptions) => {
                 if (guildOnly) {
                     if (!guild) return
                 }
-
 
 
                 // Ensure that the message meber is form the owners
@@ -185,9 +188,36 @@ module.exports = (client, commandOptions) => {
                     args.length < minArgs ||
                     (maxArgs !== null && args.length > maxArgs)
                 ) {
-                    message.reply(
-                        `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
-                    )
+                    // message.reply(
+                    //     `Incorrect syntax! Use ${prefix}${alias} ${expectedArgs}`
+                    // )
+                    const mainCommand =
+                        typeof commands === 'string'
+                            ? commands
+                            : commands[0]
+
+                    const commandEmbed = new MessageEmbed()
+                        .setColor('RED')
+                        .setTitle(`\\❌ Wrong usage`)
+                        .setFooter(`required: <> | optional: () | required in some subcommands: [] | required in defrent args: {}`)
+
+                    commandEmbed.addField('Usage', prefix + mainCommand + ` ${expectedArgs}`)
+                    if (subcommands) {
+                        commandEmbed.addField('Subcommands', subcommands)
+                    }
+                    if (examples) {
+                        let result = ''
+
+                        examples.forEach(example => {
+                            example = ` ${example} `
+                            result += `${prefix + mainCommand + example}\n`
+                        })
+
+                        commandEmbed.addField('Examples:', `${result} `)
+                    }
+
+                    message.channel.send(commandEmbed)
+                    message.delete()
                     return
                 }
 

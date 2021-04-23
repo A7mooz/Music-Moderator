@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { modLog } = require('@root/config.json')
+const log = require('../../../util/log')
 
 module.exports = {
     commands: 'unban',
@@ -18,13 +19,14 @@ module.exports = {
         const reason = args.slice(1).join(' ') || undefined
 
         if (user) {
-            const member = message.guild.fetchBans(user)
+            let member = message.guild.fetchBans(user)
 
 
             if (!member) return message.channel.send(`**<:no:811286748712796201> Can't find that member in bans list!**`).then(msg => msg.delete({ timeout: 5000 }))
 
-            message.guild.members.unban(user, { reason: reason })
-            message.reply(`Unbanned`)
+            message.guild.members.unban(user, { reason: reason }).then(member => {
+                log(message, member, reason, 'GREEN', 'Unbanned')
+            })
 
 
         } else {
