@@ -15,8 +15,8 @@ module.exports = {
 
         const channel = message.guild.channels.cache.find(cl => cl.id == modLog)
 
-        const user = args[0]
-        const reason = args.slice(1).join(' ') || undefined
+        let user = args[0]
+        const reason = args.slice(1).join(' ') || 'No reason specified'
 
         if (user) {
             let member = message.guild.fetchBans(user)
@@ -24,8 +24,9 @@ module.exports = {
 
             if (!member) return message.channel.send(`**<:no:811286748712796201> Can't find that member in bans list!**`).then(msg => msg.delete({ timeout: 5000 }))
 
-            message.guild.members.unban(user, { reason: reason }).then(member => {
-                log(message, member, reason, 'GREEN', 'Unbanned')
+            message.guild.members.unban(user, { reason: reason }).then(user => {
+                message.channel.send(`${user.tag} was unbanned`)
+                log(message, user, reason, 'GREEN', 'Unbanned')
             })
 
 

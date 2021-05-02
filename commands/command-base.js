@@ -98,12 +98,20 @@ module.exports = (client, commandOptions) => {
                     if (!guild) return
                 }
 
+                function permError() {
+                    const embed = new MessageEmbed()
+                        .setAuthor(message.author.username)
+                        .setDescription("You don't have permission to run this command.")
+                        .setColor('ff0000')
+                    message.delete()
+                    return channel.send(embed).then(msg => msg.delete({ timeout: 1000 * 5 }))
+                }
 
                 // Ensure that the message meber is form the owners
                 if (ownerOnly) {
                     for (i in owners) {
                         if (member.user.id !== owners[i]) {
-                            return message.delete()
+                            return permError()
                         }
                     }
                 }
@@ -126,30 +134,30 @@ module.exports = (client, commandOptions) => {
                     if (modOnly) {
                         if (modOnly === true) {
                             if (!member.roles.cache.find(r => modRoles.includes(r.id)) && !member.hasPermission(permission)) {
-                                return message.delete()
+                                return permError()
                             }
                         }
 
                         for (i in modOnly) {
                             if (!member.roles.cache.find(r => r.id === modOnly[i]) && !member.hasPermission(permission)) {
-                                return message.delete()
+                                return permError()
                             }
                         }
                     } else if (!member.hasPermission(permission)) {
-                        return message.delete()
+                        return permError()
                     }
                 }
 
                 if (!permissions.length) {
                     if (modOnly === true) {
                         if (!member.roles.cache.find(r => modRoles.includes(r.id))) {
-                            return message.delete()
+                            return permError()
                         }
                     }
 
                     for (i in modOnly) {
                         if (!member.roles.cache.find(r => r.id === modOnly[i])) {
-                            return message.delete()
+                            return permError()
                         }
                     }
                 }

@@ -6,6 +6,7 @@ module.exports = {
     commands: ['help'],
     description: "Describes all of this bot's commands",
     expectedArgs: '(command)',
+    hidden: true,
     guildOnly: true,
     modOnly: true,
     permissions: ['ADMINISTRATOR'],
@@ -72,9 +73,11 @@ module.exports = {
                 }
             }
 
-            if (mainCommand === 'help') continue
+            if (command.hidden) {
+                continue
+            }
 
-            embed.addField(mainCommand, `${description}.`)
+            embed.addField(mainCommand, `${description}.`, true)
         }
 
         if (args[0]) {

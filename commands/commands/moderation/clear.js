@@ -3,8 +3,8 @@ module.exports = {
     category: 'Moderation',
     minArgs: 1,
     expectedArgs: '<subcommand/user/amount> [amount]',
-    subcommands: ['`bot`: deletes client bot\'s message and the messages that starts with the prefix', '`bots`: deletes messages that are written by a bot', '`-r/regex`: deletes a message that includes some string'],
-    examples: ['bot', '@someone 50', '479269670998900736 100', 'bots', '-r hi 100', '10'],
+    subcommands: ['`bot`: deletes client bot\'s message and the messages that starts with the prefix', '`bots`: deletes messages that are written by a bot', '`-r/regex`: deletes a message that includes some string', '`-s/start`: deletes a message that starts with the specified string'],
+    examples: ['bot', '@someone 50', '479269670998900736 100', 'bots', '-r hi 100', 'start hello 15', '10'],
     description: 'Clears amount of messages form a channel',
     permissions: ['MANAGE_MESSAGES'],
     guidOnly: true,
@@ -14,7 +14,7 @@ module.exports = {
         const timeOut = 1000 * 5
 
         message.delete().then(() => {
-            const user = message.mentions.users.first() || message.guild.member(args[1])
+            const user = message.mentions.users.first() || message.guild.member(args[0])
             const num = Math.floor(args[1])
 
             if (num > 100) num = 100
@@ -69,6 +69,39 @@ module.exports = {
                 })
             }
 
+            if (['dup', 'duplicates'].includes(args[0].toLowerCase())) {
+                channel.messages.fetch({
+                    limit: 100
+                }).then((messages) => {
+                    let result = []
+
+                    var valueArr = messages.map(function (item) { return item.content })
+
+                    var duplicates = []
+                    valueArr.filter((item, idx) => valueArr.indexOf(item) != idx).forEach(v => duplicates.push(v))
+
+                    messages.filter(m => duplicates.includes(m.content)).forEach(msg => result.push(msg))
+
+                    channel.bulkDelete(result, true)
+                })
+            }
+
+            if (['-s', 'start'].includes(args[0].toLowerCase())) {
+                Math.floor(args[2])
+                if (args[2] > 100) args[2] = 100
+                if (args[2] < 1) args[2] = 1
+
+                if (Number.isNaN(args[2])) return message.reply('Please provide a valid number of messages to delete')
+
+                channel.messages.fetch({
+                    limit: args[2]
+                }).then((messages) => {
+                    const result = []
+
+                    messages.filter(m => m.content.startsWith(args[1])).forEach(msg => result.push(msg))
+                    channel.bulkDelete(result, true)
+                })
+            }
 
             if (!isNaN(args[0]) && args.length === 1) {
                 args[0] = Math.floor(args[0])
