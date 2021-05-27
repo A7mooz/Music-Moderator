@@ -11,9 +11,16 @@ module.exports = {
 
         const timeOut = 5 * 1000
 
-        var channel = message.mentions.channels.first() || message.guild.channels.cache.find(args[1]) || message.channel
+        var channel = message.mentions.channels.first() || message.guild.channels.cache.find(cl => cl.id === args[1]) || message.channel
 
-        if (!args.length) return message.channel.send(`Current slowmode is ${channel.rateLimitPerUser} seconds!`)
+        if (!args.length) {
+            if (channel.rateLimitPerUser === 0) {
+                message.channel.send(`Slowmode is currently disabled in this channel!`)
+                return
+            }
+            message.channel.send(`Current slowmode is ${channel.rateLimitPerUser} seconds!`)
+            return
+        }
 
         if (isNaN(args[0])) return message.reply('Slowmode have to be a number').then(msg => msg.delete({ timeout: timeOut }))
         if (Number(args[0]) > 21600) return message.reply("Slowmode can't be more than 21600").then(msg => msg.delete({ timeout: timeOut }))
