@@ -1,7 +1,7 @@
 module.exports = {
     commands: ['slowmode', 'sm', 'slow'],
     category: 'Moderation',
-    expectedArgs: '(+/-) {Number} (channel: mention)',
+    expectedArgs: '(+/-){Number} (channel: mention)',
     description: 'Sets a slowmode for a channel',
     permissions: ['ADMINISTRATOR'],
     guidOnly: true,
