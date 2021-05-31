@@ -6,7 +6,7 @@ module.exports = async (message, member, reason, color, action) => {
     const embed = new MessageEmbed()
         .setAuthor(`${message.author.tag} (ID ${message.author.id})`, message.author.avatarURL())
         .setDescription(`**${action}** ${member.user || member.tag} *(ID ${member.id})* ${reason ? `\n**Reason:** ${reason}` : ''}`)
-        .setThumbnail(member.avatarURL({ dynamic: true } || member.user.avatarURL({ dynamic: true })))
+        .setThumbnail(member.user.avatarURL({ dynamic: true }) || member.avatarURL({ dynamic: true }))
         .setColor(color)
     channel.send(embed)
 }

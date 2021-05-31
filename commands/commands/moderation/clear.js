@@ -40,18 +40,7 @@ module.exports = {
                     channel.bulkDelete(botsMessages, true)
                 })
             }
-            // if (args[0].toLowerCase() === 'bot') {
-            //     channel.messages.fetch({
-            //         limit: 100
-            //     }).then((messages) => {
-            //         let botUsages = []
-            //         let clientMessages = []
 
-            //         messages.filter(m => m.content.startsWith(prefix)).forEach(msg => botUsages.push(msg))
-            //         messages.filter(m => m.author.id == client.user.id).forEach(msg => clientMessages.push(msg))
-            //         channel.bulkDelete(clientMessages.concat(botUsages), true)
-            //     })
-            // }
             if (['-r', 'regex'].includes(args[0].toLowerCase())) {
                 Math.floor(args[2])
                 if (args[2] > 100) args[2] = 100
