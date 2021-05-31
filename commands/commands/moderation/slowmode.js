@@ -6,10 +6,10 @@ module.exports = {
     permissions: ['ADMINISTRATOR'],
     guidOnly: true,
     modOnly: true,
-    callback: ({ message, args, client }) => {
+    callback: ({ message, args, client, timeOut }) => {
         message.delete()
 
-        const timeOut = 5 * 1000
+
 
         var channel = message.mentions.channels.first() || message.guild.channels.cache.find(cl => cl.id === args[1]) || message.channel
 
@@ -18,15 +18,20 @@ module.exports = {
                 message.channel.send(`Slowmode is currently disabled in this channel!`)
                 return
             }
-            message.channel.send(`Current slowmode is ${channel.rateLimitPerUser} seconds!`)
+            message.channel.send(`Current slowmode is \`${channel.rateLimitPerUser}\` seconds!`)
             return
         }
 
-        if (isNaN(args[0])) return message.reply('Slowmode have to be a number').then(msg => msg.delete({ timeout: timeOut }))
-        if (Number(args[0]) > 21600) return message.reply("Slowmode can't be more than 21600").then(msg => msg.delete({ timeout: timeOut }))
+        if (isNaN(Number(args[0]))) return message.reply('Slowmode have to be a number').then(msg => msg.delete({ timeout: timeOut }))
+        if (Number(args[0]) > 21600) return message.reply("Slowmode can't be more than 21600 seconds").then(msg => msg.delete({ timeout: timeOut }))
 
         function send(cl) {
-            message.channel.send(`Slowmode set to \`${cl.rateLimitPerUser}\` seconds in ${channel}!`)
+            if (args.length > 1) {
+                message.channel.send(`Slowmode set to \`${cl.rateLimitPerUser}\` seconds in ${channel}!`).then(msg => msg.delete({ timeout: timeOut }))
+                channel.send(`Slowmode set to \`${cl.rateLimitPerUser}\` seconds!`)
+            } else if (args.length <= 1) {
+                message.channel.send(`Slowmode set to \`${cl.rateLimitPerUser}\` seconds!`)
+            }
         }
 
         if (args[0].includes('+')) {
