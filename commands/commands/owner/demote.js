@@ -27,7 +27,7 @@ module.exports = {
 
         if (!member) return message.reply("Can't find that member!").then(msg => msg.delete({ timeout: timeOut }))
 
-        if (!member.roles.cache.find(r => r.id == trial_mod || r.id == mod || r.id == staff)) return message.channel.send(`**<:no:811286748712796201> This member doen't have any moderational roles**`)
+        if (!member.roles.cache.find(r => r.id == trial_mod && r.id == mod && r.id == staff)) return message.channel.send(`**<:no:811286748712796201> This member doen't have any moderational roles**`)
             .then(msg => msg.delete({ timeout: timeOut }))
 
         message.channel.send(`**<a:loading:811275151811412018> Demoting member...**`).then(msg => {
