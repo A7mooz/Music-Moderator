@@ -1,7 +1,7 @@
 module.exports = {
     commands: 'clean',
     category: 'Moderation',
-    description: 'Deletes client bot\'s message and the messages that starts with the prefix',
+    description: 'Deletes client bot\'s message and messages that starts with the prefix',
     permissions: 'MANAGE_MESSAGES',
     guildOnly: true,
     modOnly: true,

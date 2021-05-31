@@ -66,6 +66,7 @@ module.exports = {
                     else {
                         message.channel.send(`**<a:loading:811275151811412018> Promoting member...**`).then(msg => {
                             member.roles.add(roles)
+                            member.roles.remove('793393550942404619')
                             msg.edit(`**<:yes:811284624759586837> Member has been successfuly promoted**`)
                             msg.delete({ timeout: timeOut })
                         })
