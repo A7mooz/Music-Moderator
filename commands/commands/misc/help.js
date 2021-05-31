@@ -14,6 +14,7 @@ module.exports = {
         let embed = new MessageEmbed()
             .setTitle('Help Menu')
             .setColor('PURPLE')
+            .setDescription(`Current prefix is \`${prefix}\``)
             .setFooter(`Use ${prefix}help (command) for more info`)
 
         const commands = loadCommands()
