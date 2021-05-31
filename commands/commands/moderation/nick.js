@@ -3,7 +3,7 @@ module.exports = {
     permissions: ['MANAGE_NICKNAMES'],
     expectedArgs: '<user: Mention/ID> (nickname: string)',
     description: 'Resets or change someone\'s nickname',
-    guidOnly: true,
+    guildOnly: true,
     modOnly: true,
     callback: ({ message, args, guild }) => {
         message.delete()

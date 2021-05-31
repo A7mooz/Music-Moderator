@@ -7,7 +7,7 @@ module.exports = {
     description: 'Kicks a member form the guild',
     expectedArgs: '<user: Mention/ID> (reason)',
     permissions: ['KICK_MEMBERS'],
-    guidOnly: true,
+    guildOnly: true,
     modOnly: true,
     callback: async ({ message, args, text, client }) => {
 

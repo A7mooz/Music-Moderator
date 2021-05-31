@@ -28,7 +28,7 @@ module.exports = client => {
 
             const isOurInvite = await isInvite(guild, code)
 
-            if (!isOurInvite) {
+            if (!isOurInvite && code) {
                 message.delete()
             }
         }

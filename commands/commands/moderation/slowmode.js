@@ -4,7 +4,7 @@ module.exports = {
     expectedArgs: '(+/-){Number} (channel: mention)',
     description: 'Sets a slowmode for a channel',
     permissions: ['ADMINISTRATOR'],
-    guidOnly: true,
+    guildOnly: true,
     modOnly: true,
     callback: ({ message, args, client, timeOut }) => {
         message.delete()

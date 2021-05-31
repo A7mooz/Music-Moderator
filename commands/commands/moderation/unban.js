@@ -8,7 +8,7 @@ module.exports = {
     expectedArgs: '<user: ID> (reason: String)',
     description: 'Unbans a user form the guild',
     permissions: ['ADMINISTRATOR'],
-    guidOnly: true,
+    guildOnly: true,
     modOnly: true,
     callback: ({ message, args, text, client, timeOut }) => {
         message.delete()

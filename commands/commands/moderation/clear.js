@@ -7,7 +7,7 @@ module.exports = {
     examples: ['bot', '@someone 50', '479269670998900736 100', 'bots', '-r hi 100', 'start hello 15', '10'],
     description: 'Clears amount of messages form a channel',
     permissions: ['MANAGE_MESSAGES'],
-    guidOnly: true,
+    guildOnly: true,
     modOnly: true,
     callback: ({ args, channel, message, prefix, client }) => {
 

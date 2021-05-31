@@ -1,6 +1,6 @@
 module.exports = {
     commands: ['clearchannel', 'cc'],
-    guidOnly: true,
+    guildOnly: true,
     ownerOnly: true,
     description: 'clear last 100 message form less than 2 weeks',
     callback: ({ message, channel, guild }) => {
