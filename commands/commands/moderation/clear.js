@@ -3,7 +3,7 @@ module.exports = {
     category: 'Moderation',
     minArgs: 1,
     expectedArgs: '<subcommand/user/amount> [amount]',
-    subcommands: ['`bots/bot`: deletes messages that are written by a bot', '`-r/regex`: deletes a message that includes some string', '`-s/start`: deletes a message that starts with the specified string'],
+    subcommands: ['`bots/bot`: deletes messages that are written by a bot', '`-r/regex`: deletes a message that includes some string', '`-s/start`: deletes a message that starts with the specified string', '`invites/invite`: clears all messages that contains a server invite'],
     examples: ['bot', '@someone 50', '479269670998900736 100', 'bots', '-r hi 100', 'start hello 15', '10'],
     description: 'Clears amount of messages form a channel',
     permissions: ['MANAGE_MESSAGES'],
@@ -88,6 +88,17 @@ module.exports = {
                     const result = []
 
                     messages.filter(m => m.content.startsWith(args[1])).forEach(msg => result.push(msg))
+                    channel.bulkDelete(result, true)
+                })
+            }
+
+            if (['invites', 'invite'].includes(args[0].toLowerCase())) {
+                channel.messages.fetch({
+                    limit: 100,
+                }).then(messages => {
+                    const result = []
+
+                    messages.filter(m => m.content.includes('discord.gg/') || m.content.includes('discord.com/invites/')).forEach(msg => result.push(msg))
                     channel.bulkDelete(result, true)
                 })
             }

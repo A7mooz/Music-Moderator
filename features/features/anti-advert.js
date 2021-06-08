@@ -20,16 +20,20 @@ module.exports = client => {
 
         if (message.channel.id !== '823518103589093376') return
 
-        const code = content.split('discord.gg/')[1]
+        var code
 
-        if (content.includes('discord.gg/')) {
+        if (content.includes('discord.gg/') || content.includes('discord.com/invite/')) {
 
             if (message.channel.id === '796424380849717299' || message.channel.id === '795950229786198016') return;
+
+            if (content.includes('discord.gg/')) code = content.split('discord.gg/')[1]
+            if (content.includes('discord.com/invite/')) code = content.split('discord.com/invite/')[1]
 
             const isOurInvite = await isInvite(guild, code)
 
             if (!isOurInvite && code) {
                 message.delete()
+                message.reply('<a:bonking:825352729693388801> You\'re not allowed to share servers in this channel.').then(msg => msg.delete({ timeout: 1000 * 5 }))
             }
         }
     })

@@ -6,14 +6,19 @@ module.exports = {
     description: 'Moderates a user\'s nickname to be mentionable',
     guildOnly: true,
     modOnly: true,
-    callback: ({ message, args, guild }) => {
-        message.delete()
-
+    callback: ({ message, args, guild, timeOut }) => {
         const user = message.mentions.users.first() || args[0]
         const member = guild.member(user)
 
-        if (!user) return message.reply('Please mention a user to moderate their nickname')
-        if (!member) return message.reply("Can't find that member in this guild!")
+        if (!user) return message.reply('Please mention a user to moderate their nickname').then(msg => {
+            msg.delete({ timeout: timeOut })
+            message.delete()
+        })
+
+        if (!member) return message.reply("Can't find that member in this guild!").then(msg => {
+            msg.delete({ timeout: timeOut })
+            message.delete()
+        })
 
         const moderate = (length) => {
             var result = []
